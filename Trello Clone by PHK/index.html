@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+   
+
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet"> 
+
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    
+    <link rel="stylesheet" href="./font-awesome-4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="./css/nav.css">
+    <link rel="stylesheet" href="./css/list.css">
+    <link rel="stylesheet" href="./css/card.css">
+    <title>Trello Clone</title>
+  </head>
+  <body>
+
+    <nav id="first-nav" class="d-flex justify-content-between first-nav text-light" onclick="closeOptionMenu()">
+      <div class="d-flex">
+        <button class="btn btn-sm text-light m-1"><i class="fa fa-th" aria-hidden="true"></i></button>
+        <button class="btn btn-sm text-light m-1"><i class="fa fa-home"></i></button>
+        <button class="btn btn-sm text-light m-1 font-weight-bold"><i class="fa fa-table" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Boards</button>
+      </div>
+
+      <div class="d-flex justify-content-center align-items-center first-nav text-light" id="centerhold"></div>
+      
+      <div class="d-flex">
+        <button class="btn btn-sm text-light m-1"><i class="fa fa-plus"></i></button>
+        <button class="btn btn-sm text-light m-1"><i class="fa fa-info-circle"></i></button>
+        <button class="btn btn-sm text-light m-1"><i class="fa fa-bell"></i></button>
+        <button class="btn btn-sm text-light m-1 avatar profile p-0"></button>
+      </div>
+    </nav>
+
+    <nav id="second-nav" class="d-flex flex-wrap justify-content-between second-nav text-light p-1" onclick="closeOptionMenu()">
+      <div class="d-flex">
+        <button class="btn btn-sm text-light m-1 font-weight-bold px-3 board-name"><i class="fa fa-trello" aria-hidden="true"></i>&nbsp;&nbsp;Trello</button>
+        <button class="btn btn-sm text-light m-1 stretch-x"><i class="fa fa-star-o"></i></button>
+        <button class="btn btn-sm text-light m-1">FE <span class="badge badge-pill badge-info">&nbsp;Free&nbsp;</span></button>
+        <button class="btn btn-sm text-light m-1"><i class="fa fa-users"></i>&nbsp;&nbsp;Team Visible</button>
+        <button class="btn btn-sm text-light m-1"><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;&nbsp;Invite&nbsp;</button>
+      </div>
+      <div class="d-flex justify-content-end" style="flex-grow: 1;">
+        <button class="btn btn-sm text-light m-1"><i class="fa fa-puzzle-piece" aria-hidden="true"></i></i>&nbsp;&nbsp;Butler (11 Tips)</button>
+        <button class="btn btn-sm text-light m-1"><i class="fa fa-ellipsis-h"></i>&nbsp;&nbsp;Show Menu</button>
+      </div>
+    </nav>
+
+    <div id="wrapper" class="p-2" onscroll="wrapperScrolled()" onclick="closeOptionMenu()"></div>
+
+    <div class="rounded trello-fadein p-1" id="add-list-popup">
+    <input type="text" class="trello-black" id="list-title-input" onkeyup="inputEntered(event)"/>
+      <div class="d-flex justify-content-between align-items-center pt-1">
+        <button class="btn btn-sm btn-success m-1" onclick="saveNewList()">Add</button>
+        <button class="btn btn-sm my-1 mx-2 p-0 text-danger" onclick="toggelAddListPopup(false)" style="font-size: large;"><i class="fa fa-close"></i></button>
+      </div>
+    </div>
+
+    <div class="list-menu rounded trello-fadein p-1" id="list-menu-popup">
+      <ul class="list-group list-group-flush">
+        <li style="text-align: center; padding-top: 5px auto 10px auto ;">List Actions </li>
+        <li class="list-group-item list-group-item-action"><i class="fa fa-plus-square-o" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Add Card</li>
+        <li class="list-group-item list-group-item-action"><i class="fa fa-copy"></i>&nbsp;&nbsp;&nbsp;Copy List</li>
+        <li class="list-group-item list-group-item-action"><i class="fa fa-arrows"></i>&nbsp;&nbsp;&nbsp;Move List</li>
+        <li class="list-group-item list-group-item-action"><i class="fa fa-eye"></i>&nbsp;&nbsp;&nbsp;Watch</li>
+        <li class="list-group-item list-group-item-action"><i class="fa fa-commenting" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Comment</li>
+        <li class="list-group-item text-danger list-group-item-action" onclick="goDeleteList()"><i class="fa fa-trash"></i>&nbsp;&nbsp;&nbsp;Delete</li>
+      </ul>
+    </div>
+
+    <div id="cardModal" class="modal fade trello-black" role="dialog" aria-labelledby="cardTitle" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="cardTitle"></h5>
+            <small id="inListDesc" class="pl-3 text-secondary">in list <strong id="inListTitle"></strong></small>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+          </div>
+          <div class="modal-body p-1">
+            <div class="d-flex mt-3">
+              <h6>
+                <i class="fa fa-bars"></i>
+              </h6>
+              <div class="flex-grow-1">
+                <h6>Description</h6>
+                <p id="cardDesc"></p>
+              </div>
+            </div>
+            <div class="d-flex">
+              <h6>
+                <i class="fa fa-indent" aria-hidden="true"></i>
+              </h6>
+              <div class="flex-grow-1">
+                <h6>Checklist</h6>
+                <div id="chkli-wrapper">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-success"><i class="fa fa-save"></i> Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+   
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="./js/index.js"></script>
+  </body>
+</html>
